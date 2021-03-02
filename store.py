@@ -4,11 +4,13 @@ from datetime import datetime
 
 ########## MYSQL CONNECTOR ##############
 
-mydb = mysql.connector.connect(
-    user="root", passwd="root", host="localhost", database="primes",  auth_plugin = 'mysql_native_password',
-)
-mycursor = mydb.cursor()
-
+try:
+    mydb = mysql.connector.connect(
+        user="root", passwd="root", host="localhost", database="primes",  auth_plugin = 'mysql_native_password',
+    )
+    mycursor = mydb.cursor()
+except Exception as e:
+    print(e)
 ########## INJECTOR FUNCTION ##############
 
 def injectDb(range, time_elapsed, algorithm,count):
@@ -21,5 +23,16 @@ def injectDb(range, time_elapsed, algorithm,count):
         val = (timestamp, lowerLimit, upperimit, time_elapsed, algorithm, count)
         mycursor.execute(sql, val)
         mydb.commit()
-    except:
-        print("SOME ERROR IN DB")
+    except Exception as e:
+        print(e)
+        return None
+    except IndexError:
+        print ("MySQL Error: %s",str(e))
+        return None
+    except TypeError as e:
+        print(e)
+        return None
+    except ValueError as e:
+        print(e)
+        return None
+

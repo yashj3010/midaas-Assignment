@@ -32,10 +32,9 @@ if __name__ == '__main__':
             print("################# ANSWER RECIEVED ###############")
             print("prime Numbers:",primeNumbers)
             print("No Of prime numbers:",len(primeNumbers))
-            print("#################################################")
-            
-    except:
-        print("Server Error, Run Server Script")
+            print("#################################################")       
+    except Exception as e:
+        print(e)
 
 
 

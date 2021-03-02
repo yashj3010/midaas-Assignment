@@ -45,4 +45,7 @@ def retrivePrimes():
     return str(primeNumbers)     
 
 ######## RUN FLASK APP ###########
-app.run(debug=True, host='127.0.1.2', port= 1111)
+try:
+    app.run(debug=True, host='127.0.1.2', port= 1111)
+except Exception as e:
+    print(e)
