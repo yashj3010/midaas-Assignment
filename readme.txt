@@ -4,7 +4,9 @@ Dependencies & How To install Required Pacakages:
     Run = python3 -m pip install -r requirements.txt
 
 2) Import Db into SQL
-    Run = mysql -u root -p primes <  primes.sql
+    mysql -u root -p root
+    create database primes
+    mysql -u root -p primes <  primes.sql
 
 EXECECUTION: 
 
