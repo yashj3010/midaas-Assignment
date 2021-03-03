@@ -11,6 +11,7 @@ try:
     mycursor = mydb.cursor()
 except Exception as e:
     print(e)
+    
 ########## INJECTOR FUNCTION ##############
 
 def injectDb(range, time_elapsed, algorithm,count):
@@ -23,9 +24,6 @@ def injectDb(range, time_elapsed, algorithm,count):
         val = (timestamp, lowerLimit, upperimit, time_elapsed, algorithm, count)
         mycursor.execute(sql, val)
         mydb.commit()
-    except Exception as e:
-        print(e)
-        return None
     except IndexError:
         print ("MySQL Error: %s",str(e))
         return None
@@ -33,6 +31,9 @@ def injectDb(range, time_elapsed, algorithm,count):
         print(e)
         return None
     except ValueError as e:
+        print(e)
+        return None
+    except Exception as e:
         print(e)
         return None
 

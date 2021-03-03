@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask.wrappers import Response
+
 import prime
 import store
 
@@ -15,15 +16,12 @@ def index():
 
 def retrivePrimes():
     data = []
+
     ####### USER INPUT ###########
     params = request.json
 
-
-    ####### CALLING PRIME MODULE ########
-    if (params == None):
-        data = "No Data Recieved"
-        
-    elif (params != None):
+    ####### CALLING PRIME MODULE ########        
+    if (params != None):
 
         algo = params[0]
         lowerLimit = params[1]
@@ -32,11 +30,14 @@ def retrivePrimes():
         primes,executionTime = prime.giveOutput(algo, lowerLimit, upperLimit)
 
         data = {"primes": primes}
-    ######## Returning The Answer ####### 
-    return data
+  
+        ######## INJECT RESULTS INTO DATABASE ####### 
+        store.injectDb([lowerLimit,upperLimit], executionTime, algo, len(primes))
 
-    ######## INJECT RESULTS INTO DATABASE ####### 
-    store.injectDb([lowerLimit,upperLimit], executionTime, algo,len(primeNumbers))
+    elif (params == None):
+        data = "No Input Recieved"
+
+    return data
 
 def primeGen():
     app.run(debug=True, host='127.0.1.2', port= 1111)    
