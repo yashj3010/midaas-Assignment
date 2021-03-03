@@ -1,7 +1,8 @@
 from flask import Flask, request
+from flask.wrappers import Response
 import prime
 import store
-import time
+
 
 ######## FLASK APP ###########
 app = Flask(__name__)
@@ -13,39 +14,37 @@ def index():
 @app.route("/prime", methods=["GET","POST"])
 
 def retrivePrimes():
-    executionTime = 0
-
+    data = []
     ####### USER INPUT ###########
     params = request.json
-    algo = params[0]
-    lowerLimit = params[1]
-    upperLimit = params[2]
+
 
     ####### CALLING PRIME MODULE ########
-    if algo == 1:
-        ticGenPrimes  = time.perf_counter()
+    if (params == None):
+        data = "No Data Recieved"
+        
+    elif (params != None):
 
-        primeNumbers  = prime.generatePrimes(lowerLimit,upperLimit)
+        algo = params[0]
+        lowerLimit = params[1]
+        upperLimit = params[2]
 
-        tocGenPrimes  = time.perf_counter()
-        executionTime = tocGenPrimes - ticGenPrimes
+        primes,executionTime = prime.giveOutput(algo, lowerLimit, upperLimit)
 
-    elif algo == 2:
-        ticGenSieve  = time.perf_counter()
-
-        primeNumbers = prime.SieveOfEratosthenes(lowerLimit,upperLimit)
-
-        tocGenSieve  = time.perf_counter()
-        executionTime = tocGenSieve - ticGenSieve
+        data = {"primes": primes}
+    ######## Returning The Answer ####### 
+    return data
 
     ######## INJECT RESULTS INTO DATABASE ####### 
     store.injectDb([lowerLimit,upperLimit], executionTime, algo,len(primeNumbers))
 
-    ######## Returning The Answer ####### 
-    return str(primeNumbers)     
+def primeGen():
+    app.run(debug=True, host='127.0.1.2', port= 1111)    
+  
 
 ######## RUN FLASK APP ###########
-try:
-    app.run(debug=True, host='127.0.1.2', port= 1111)
-except Exception as e:
-    print(e)
+if __name__ == "__main__":
+    try:
+        primeGen()
+    except Exception as e:
+        print(e)
