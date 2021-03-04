@@ -40,12 +40,12 @@ def retrivePrimes():
     return data
 
 def primeGen():
-    app.run(debug=True, host='127.0.1.2', port= 1111)    
+    try:
+        app.run(debug=True, host='127.0.1.2', port= 1111)
+    except Exception as e:
+        print(e)    
   
 
 ######## RUN FLASK APP ###########
 if __name__ == "__main__":
-    try:
-        primeGen()
-    except Exception as e:
-        print(e)
+    primeGen()
